@@ -111,17 +111,11 @@ public class MyController {
 			productDto.getFile().transferTo(file);
 			log.info("파일업로드 성공");
 
-			// 썸네일 생성
-			String thumbnailSaveName = "s_" + filename;
-			boardDto.setThumbnailName(thumbnailSaveName);
-
-			File thumbnailFile = new File(path + thumbnailSaveName);
 			File ufile = new File(path + filename);
 			// Thumbnailator.createThumbnail(file, thumbnailFile, 100, 100);
-			Thumbnails.of(ufile).size(100, 100).toFile(thumbnailFile);
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
