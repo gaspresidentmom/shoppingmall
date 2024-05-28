@@ -1,10 +1,12 @@
 package com.example.shoppingMall.controller;
 
 import java.io.File;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -26,22 +28,24 @@ public class MyController {
 	MemberRepository memberRepository;
 	
 	@Autowired
-	ProductRepository productRepo;
+	ProductRepository productRepository;
 	
 	@Value("${spring.servlet.multipart.location}")
 	//applicaion.properties에 정의한 경로를 읽어와서 변수에 넣어줌.
 	private String path;
 
 	@RequestMapping("/")
-	public String root2() {
+	public String root() {
 		return "/main";
 	}
 	
+	// 로그인폼으로 가기
 	@RequestMapping("/members/loginForm")
 	public String goLoginForm() {
 		return "/members/loginForm";
 	}
 	
+	// 로그인 기능
 	@RequestMapping("/members/getLogin")
 	public String getLogin(@RequestParam("username") String username,
 			@RequestParam("pw") String pw, HttpServletRequest req) {
@@ -58,6 +62,7 @@ public class MyController {
 		return "redirect:/members/loginForm";
 	}
 	
+	// 로그아웃 기능
 	@RequestMapping("/members/logout")
 	public String getLogOut(HttpServletRequest req) {
 		HttpSession session = req.getSession();
@@ -65,13 +70,14 @@ public class MyController {
 		return "/main";
 	}
 	
-	
+	// 회원가입 폼
 	@RequestMapping("/members/regForm")
 	public String goRegForm() {
 		return "/members/regForm";
 	}
 	
-	@RequestMapping("/registMember")
+	// 회원가입 기능
+	@RequestMapping("members/registMember")
 	public String goRegist(@RequestParam("username") String username,
 			@RequestParam("pw") String pw,
 			@RequestParam("tel") String tel,
@@ -83,17 +89,16 @@ public class MyController {
 		mem.setRole(role);
 		
 		memberRepository.save(mem);
-		return "redirect:/loginForm";
+		return "/members/loginForm";
 	}
 	
-	
+	// 게시물 등록폼
 	@RequestMapping("/admin/regProductForm")
 	public String regProduct() {
-		
-		
 		return "/admin/regProductForm";
 	}
 	
+	// 게시물 등록 기능
 	@RequestMapping("/product/regist")
 	public String productRegist(ProductDto productDto) {
 		Product newP = new Product();
@@ -119,12 +124,18 @@ public class MyController {
 			e.printStackTrace();
 		}
 		
-		productRepo.save(newP);
+		productRepository.save(newP);
 		
 		return "/main";
 	}
 	
-	
+	@RequestMapping("/list")
+	public String getList(Model model) {
+		List<Product> plist = productRepository.findAll();
+		model.addAttribute("plist", plist);
+		
+		return"/admin/list";
+	}
 	
 	
 	

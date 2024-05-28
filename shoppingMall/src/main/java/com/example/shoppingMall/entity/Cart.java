@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
 
@@ -15,11 +16,11 @@ public class Cart {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int cartno;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name="pname")
 	private Product pname;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name="username")
 	private Member username;
 	
