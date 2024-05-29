@@ -23,7 +23,7 @@ public class Cart {
 	@ManyToOne
 	@JoinColumn(name="username")
 	private Member username;
-	
+
 	private int quantity;
-	private String payment;
+	
 }

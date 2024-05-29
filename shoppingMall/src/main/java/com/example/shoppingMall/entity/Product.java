@@ -1,8 +1,9 @@
 package com.example.shoppingMall.entity;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-import org.springframework.web.multipart.MultipartFile;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,11 +20,14 @@ public class Product {
 	private int pno;
 	private String pname;
 	private int price;
-	private String manufacturer;
-	//private String photoUrl;
+	private int stock;
 	private String saleState;
-	private int quantity;
+	private String seller;
+	
+	@CreationTimestamp
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+	@Column(name = "regDate")
+	private LocalDateTime regDate;
 	private String filename;
-	private LocalDate regDate;
-	private int orderNum;
+	private int orderNum;                                                                          
 }
