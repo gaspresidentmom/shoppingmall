@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.shoppingMall.dto.CartDto;
+import com.example.shoppingMall.entity.Member;
 import com.example.shoppingMall.entity.Product;
 import com.example.shoppingMall.respository.CartRepository;
 import com.example.shoppingMall.respository.MemberRepository;
@@ -22,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-@RequestMapping("/member")
+@RequestMapping("/members")
 public class MemberController {
 
 	@Autowired
@@ -41,23 +42,8 @@ public class MemberController {
 
 	
 	// 회원용 메인 (인기상품/최신상품 리스트)
-	@RequestMapping("/member")
+	@RequestMapping("/")
 	public String root(Product product, Model model, HttpServletRequest req) {
-		
-		
-		// 로그인된 사람이 관리자인지 회원인지 구분
-		HttpSession session = req.getSession();
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		// 1. (메인페이지)인기상품 
 		List<Product> hotItemList = productRepository.findAll();
@@ -82,46 +68,39 @@ public class MemberController {
 		List<Product> NewItems = newItemList.stream().limit(4).collect(Collectors.toList());
 		model.addAttribute("n", NewItems);
 		
-		// 내가 쓴 코드 : LocalDateTime regDate = product.getRegDate();
-		//내가 쓴 코드 : List<Product> plistNew = productRepository.findOrderByRegDate(regDate);
-		
-		return "/main";
+		return "main";
 	}
 	
-
 	// 회원용 상품 정보 디테일
-	@RequestMapping("/members/prodDetail")
+	@RequestMapping("/prodDetail")
 	public String getDetail2(@RequestParam("pno") int pno, Model model) {
 		Product product = productRepository.findOneByPno(pno);
 		
 		model.addAttribute("product",product);
 	
-		return "/members/detail";
+		return "members/detail";
 	}
 	
 	// 장바구니로 이동
-	@RequestMapping("/members/cart")
-	public String goCart(CartDto cartDto) {
+	@RequestMapping("/cart")
+	public String goCart(Model model, HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		//Member member = memberRepository.findOneByUsername((String)session.getAttribute("logged"));
+		//List<Product> productList = productRepository.findByUsername(member);
+		List<CartDto> cartDtoList = cartRepository.findAllWithCartDto((String)session.getAttribute("logged"));
 		
-		return "/members/myCart";
+		model.addAttribute("cartDtoList",cartDtoList);
+		return "members/myCart";
 	}
 	
 	
 	// 장바구니에 상품 담기 기능
-	@RequestMapping("/members/saveCart")
+	@RequestMapping("/saveCart")
 	public String saveCart(Model model, CartDto cartDto) {
 		
-		List<CartDto> cartList = cartRepository.findAllWithCartDto();
-		cartList.add(cartDto);
+		//List<CartDto> cartList = cartRepository.findAllWithCartDto();
+		//cartList.add(cartDto);
 		
-		return "/members/myCart";
+		return "members/myCart";
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 }

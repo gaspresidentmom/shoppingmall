@@ -28,11 +28,11 @@
 	
 	<h2>${sessionScope.logged}님의 장바구니</h2>
 	<div class="cartContainer">
-	<c:forEach var="c" items=${cartList }>
+	<c:forEach var="c" items="${cartList }">
 		<ul>
 			<li>상품번호: ${c.pno }</li>
 			<li>상품명: ${c.pname }</li>
-			<li><a href="/product/detail?pno=${c.pno}" }><img src="/images/${c.file }" alt="${h.pname }" width="150" height="200"></a></li>
+			<li><a href="/product/detail?pno=${c.pno}" ><img src="/images/${c.file }" alt="${h.pname }" width="150" height="200"></a></li>
 			<li>가격: ${c.price }</li>
 			<li>판매상태: ${c.saleState }</li>
 			<li>수량: ${c.quantity }</li>

@@ -8,7 +8,7 @@
 </head>
 <body>
 	<h2>상품 등록</h2>
-	<form action="/product/regist" method="post" enctype="multipart/form-data">
+	<form action="/admin/product/regist" method="post" enctype="multipart/form-data">
 		상품명 <input type="text" name="pname" placeholder="상품명을 입력하세요"><br>
 		상품 이미지 <input type="file"	name="file"><br>
 		가격 <input type="number" name="price" placeholder="가격을 입력하세요"><br>

@@ -1,6 +1,7 @@
 package com.example.shoppingMall.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,18 +33,10 @@ public class MainController {
 
 
 	@RequestMapping("/")
-	public String root(@RequestParam("username") String username, Product product, Model model, HttpServletRequest req) {
+	public String root(Product product, Model model, HttpServletRequest req) {
 		
 		// 로그인된 사람이 관리자인지 회원인지 구분
-		HttpSession session = req.getSession();
-		Member member = memberRepository.findOneByUsername(username);
-		if(member != null) {
-			session.setAttribute("username", username);
-			session.setAttribute("role", member.getRole());
-			
-			
-		}
-		
+
 		// 1. (메인페이지)인기상품 
 		List<Product> hotItemList = productRepository.findAll();
 		System.out.println(hotItemList);
@@ -57,15 +50,15 @@ public class MainController {
 		
 		
 		// 2. (메인페이지)신상품 리스트
-		List<Product> newItemList = productRepository.findAll();
+		List<Product> newItemList = productRepository.findOrderByRegDate();
 		System.out.println(newItemList);
+		model.addAttribute("n", newItemList);
 		
 		// 2-1. 상품 2개 중 제일 최신에 등록된 상품대로 정렬하기
-		newItemList.sort((p1, p2) -> p2.getRegDate().compareTo(p1.getRegDate()));
+		//newItemList.sort((p1, p2) -> p2.getRegDate().compareTo(p1.getRegDate()));
 		
 		// 2-2. 정렬한 상품 중 4개만 선별해 새로운 리스트로 저장
-		List<Product> NewItems = newItemList.stream().limit(4).collect(Collectors.toList());
-		model.addAttribute("n", NewItems);
+		// List<Product> NewItems = newItemList.stream().limit(4).collect(Collectors.toList());
 		
 		// 내가 쓴 코드 : LocalDateTime regDate = product.getRegDate();
 		//내가 쓴 코드 : List<Product> plistNew = productRepository.findOrderByRegDate(regDate);

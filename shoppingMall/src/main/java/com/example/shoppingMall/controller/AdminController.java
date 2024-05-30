@@ -85,9 +85,9 @@ public class AdminController {
 	
 	
 		// 상품 등록폼
-		@RequestMapping("/admin/regProductForm")
+		@RequestMapping("/regProductForm")
 		public String regProduct() {
-			return "/admin/regProductForm";
+			return "admin/regProductForm";
 		}
 		
 		// 상품 등록 기능 + 수정 기능
@@ -118,16 +118,16 @@ public class AdminController {
 		}
 		
 		// 관리자용 상품 리스트
-		@RequestMapping("/admin/list")
+		@RequestMapping("/list")
 		public String getList(Model model) {
 			List<Product> plist = productRepository.findAll();
 			model.addAttribute("plist", plist);
 			
-			return"/admin/listForAdmin";
+			return "/admin/listForAdmin";
 		}
 		
 		// 관리자용 상품 정보 디테일
-		@RequestMapping("/admin/prodDetail")
+		@RequestMapping("/prodDetail")
 		public String getDetail(@RequestParam("pno") int pno, Model model) {
 			Product product = productRepository.findOneByPno(pno);
 			model.addAttribute("product",product);
@@ -138,7 +138,7 @@ public class AdminController {
 		
 
 		// 상품 수정폼
-		@RequestMapping("/admin/upProductForm")
+		@RequestMapping("/upProductForm")
 		public String updateProductForm(Product p, Model model) {
 			
 			Product product = productRepository.findOneByPno(p.getPno());

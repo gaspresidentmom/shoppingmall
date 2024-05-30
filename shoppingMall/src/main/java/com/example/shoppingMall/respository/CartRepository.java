@@ -14,11 +14,11 @@ public interface CartRepository extends JpaRepository<Cart, Integer>{
 
 	public Cart save(Product product);
 	
-	@Query(value = "SELECT p.pno, p.pname, p.filename, p.price, p.sale_state, c.quantity FROM product p join cart c ON p.pname = c.pname GROUP BY p.pname", nativeQuery = true)
-    List<Object[]> findAllWithCartDtoAsArray();
+	@Query(value = "SELECT p.pno, p.pname, p.filename, p.price, p.sale_state, c.quantity FROM product p join cart c ON p.pname = c.pname WHERE c.username = :username", nativeQuery = true)
+    List<Object[]> findAllWithCartDtoAsArray(String username);
 
-    default List<CartDto> findAllWithCartDto() {
-        List<Object[]> results = findAllWithCartDtoAsArray();
+    default List<CartDto> findAllWithCartDto(String username) {
+        List<Object[]> results = findAllWithCartDtoAsArray(username);
         List<CartDto> dtos = new ArrayList<>();
         for (Object[] result : results) {
         	CartDto dto = new CartDto();
