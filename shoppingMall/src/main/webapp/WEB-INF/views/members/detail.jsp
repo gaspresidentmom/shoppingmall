@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>관리자용 상품 디테일</title>
+<title>회원용 상품 디테일</title>
 <style>
 .container li {
 	list-style-type: none;
@@ -21,15 +21,14 @@
 		<%
 		} else {
 		%>
-		${sessionScope.logged}님, 안녕하세요 <a href="/members/logout">로그아웃</a> 
-		<a href="/admin/regProductForm">상품등록</a>
-		<a href="/">홈으로</a>
+		${sessionScope.logged}님, 안녕하세요 <a href="/members/logout">로그아웃</a> <a
+			href="/members/cart">장바구니</a>
 		<%
 		}
 		%>
 
 	</header>
-	<h2>등록 상품 리스트</h2>
+	<h2>${product.pname } 상세정보</h2>
 	<div class="container">
 		<ul>
 			<li>상품번호: ${product.pno }</li>
@@ -42,6 +41,12 @@
 			<li>재고: ${product.stock }</li>
 			<li>누적 주문수: ${product.orderNum }</li>
 			<li>
+			<form action="/members/saveCart" method="post">
+				<input type="hidden" name="pno" value="${product.pno }">
+				수량<input type="number" name="quantity">
+				<input type="submit" value="장바구니에 담기">
+			</form>
+			</li>
 		</ul>
 	</div>
 </body>

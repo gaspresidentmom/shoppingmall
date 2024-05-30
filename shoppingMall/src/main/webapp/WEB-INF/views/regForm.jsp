@@ -7,8 +7,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h2> Member 회원가입 페이지 </h2>
-	<form action="/members/registMember" method="post">
+	<h2> 회원가입 페이지 </h2>
+	<form action="/registMember" method="post">
 		username <input type="text" name="username" placeholder="username을 입력하세요"><br>
 		password <input type="password" name="pw" placeholder="비밀번호를 입력하세요"><br>
 		연락처 <input type="text" name="tel" placeholder="연락처를 입력하세요"><br>

@@ -31,19 +31,47 @@
 		
 		<h1>${sessionScope.logged}(관리자)님, 안녕하세요</h1>
 		<a href="/admin/regProductForm">상품등록</a>
-		<a href="/admin/upProductForm">상품수정</a>
-		<a href="/admin/delProduct">상품삭제</a>
-		<a href="/admin/list">상품리스트</a>
+		<a href="/admin/list">상품리스트(수정, 삭제)</a>
 		<% }%>
 	</header>
 	
+	<% if(session.getAttribute("logged") != null && session.getAttribute("role").equals("ROLE_ADMIN")){ %>
+	<!-- 관리자용 상품 디테일로 가기 -->
 	<h2>!HOT! items</h2>
 	 	<div class="container" >
 		<c:forEach var="h" items="${hot }">
 			<ul>
 				<li>상품번호: ${h.pno }</li>
 				<li>상품명: ${h.pname }</li>
-				<li><a href="/product/detail?pno=${h.pno}" }><img src="/images/${h.filename }" alt="${h.pname }" width="150" height="200"></a></li>
+				<li><a href="/admin/prodDetail?pno=${h.pno}" }><img src="/images/${h.filename }" alt="${h.pname }" width="150" height="200"></a></li>
+				<li>가격: ${h.price }</li>
+				<li>판매상태: ${h.saleState }</li>
+
+			</ul>
+		</c:forEach>
+		</div>
+	
+	<h2>!NEW! items</h2>
+		<div class="container">
+			<c:forEach var="n" items="${n }">
+				<ul>
+					<li>상품번호: ${n.pno }</li>
+					<li>상품명: ${n.pname }</li>
+					<li><a href="/admin/prodDetail?pno=${n.pno}" }><img src="/images/${n.filename }" alt="${n.pname }" width="150" height="200"></a></li>
+					<li>가격: ${n.price }</li>
+					<li>판매상태: ${n.saleState }</li>
+				</ul>
+			</c:forEach>
+		</div>
+		<% }else if(session.getAttribute("logged") != null && session.getAttribute("role").equals("ROLE_MEMBER")){ %>
+		<!-- 회원용 상품 디테일로 가기 -->
+		<h2>!HOT! items</h2>
+	 	<div class="container" >
+		<c:forEach var="h" items="${hot }">
+			<ul>
+				<li>상품번호: ${h.pno }</li>
+				<li>상품명: ${h.pname }</li>
+				<li><a href="/members/prodDetail?pno=${h.pno}" }><img src="/images/${h.filename }" alt="${h.pname }" width="150" height="200"></a></li>
 				<li>가격: ${h.price }</li>
 				<li>판매상태: ${h.saleState }</li>
 
@@ -58,11 +86,12 @@
 				<ul>
 					<li>상품번호: ${n.pno }</li>
 					<li>상품명: ${n.pname }</li>
-					<li><a href="/product/detail?pno=${h.pno}" }><img src="/images/${n.filename }" alt="${n.pname }" width="150" height="200"></a></li>
+					<li><a href="/members/prodDetail?pno=${n.pno}" }><img src="/images/${n.filename }" alt="${n.pname }" width="150" height="200"></a></li>
 					<li>가격: ${n.price }</li>
 					<li>판매상태: ${n.saleState }</li>
 				</ul>
 			</c:forEach>
 		</div>
+		<% } %>
 </body>
 </html>
