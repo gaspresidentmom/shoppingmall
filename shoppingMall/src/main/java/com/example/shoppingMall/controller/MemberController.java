@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.shoppingMall.dto.CartDto;
+import com.example.shoppingMall.entity.Cart;
 import com.example.shoppingMall.entity.Member;
 import com.example.shoppingMall.entity.Product;
 import com.example.shoppingMall.respository.CartRepository;
@@ -19,9 +20,8 @@ import com.example.shoppingMall.respository.ProductRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+//@Slf4j
 @Controller
 @RequestMapping("/members")
 public class MemberController {
@@ -72,12 +72,12 @@ public class MemberController {
 	}
 	
 	// 회원용 상품 정보 디테일
-	@RequestMapping("/prodDetail")
-	public String getDetail2(@RequestParam("pno") int pno, Model model) {
+	@RequestMapping("/mProdDetail")
+	public String getDetail2(@RequestParam("pno") int pno, HttpServletRequest req, Model model) {
 		Product product = productRepository.findOneByPno(pno);
-		
 		model.addAttribute("product",product);
-	
+		HttpSession session = req.getSession();
+		model.addAttribute("role", session.getAttribute("role"));
 		return "members/detail";
 	}
 	
@@ -88,19 +88,54 @@ public class MemberController {
 		//Member member = memberRepository.findOneByUsername((String)session.getAttribute("logged"));
 		//List<Product> productList = productRepository.findByUsername(member);
 		List<CartDto> cartDtoList = cartRepository.findAllWithCartDto((String)session.getAttribute("logged"));
-		
+		System.out.println("************************************************");
+		System.out.println(cartDtoList);
 		model.addAttribute("cartDtoList",cartDtoList);
 		return "members/myCart";
 	}
 	
-	
 	// 장바구니에 상품 담기 기능
 	@RequestMapping("/saveCart")
-	public String saveCart(Model model, CartDto cartDto) {
+	public String saveCart(@RequestParam("pno") int pno
+			, @RequestParam("quantity") int quantity
+			, HttpServletRequest req) {
 		
-		//List<CartDto> cartList = cartRepository.findAllWithCartDto();
-		//cartList.add(cartDto);
+		HttpSession session = req.getSession();
+		String username = (String)session.getAttribute("logged");
+		System.out.println("*******************************************************");
 		
-		return "members/myCart";
+		Cart cart = new Cart();
+		Product product = new Product();
+		product.setPno(pno);
+		cart.setPno(product);
+		cart.setQuantity(quantity);
+		
+		Member member = new Member();
+		member.setUsername(username);
+		cart.setUsername(member);
+		
+		Cart c = cartRepository.save(cart);
+		//Cart cart = cartRepository.save(pno, username, quantity);
+		System.out.println("c: "+ c);
+		System.out.println("저장까지는 완료");
+		return "redirect:/members/cart";
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

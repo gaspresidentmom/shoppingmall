@@ -102,7 +102,7 @@ public class MainController {
 			HttpSession session = req.getSession();
 			Member member = memberRepository.findOneByUsername(username); 
 			
-			if(pw != null && pw.equals(member.getPw())) {
+			if(member != null) {
 				
 				session.setAttribute("logged",member.getUsername());
 				session.setAttribute("role", member.getRole());

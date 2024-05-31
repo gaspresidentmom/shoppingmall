@@ -11,9 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CartDto {
 
+	private int cno;
 	private int pno;
 	private String pname;
-	private String file;
+	private String username;
+	private String filename;
 	private int price;
 	private String saleState;
 	private int quantity;

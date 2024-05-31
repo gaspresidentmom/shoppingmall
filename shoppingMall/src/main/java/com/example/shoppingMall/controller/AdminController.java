@@ -18,6 +18,7 @@ import com.example.shoppingMall.respository.ProductRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.websocket.Session;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -38,21 +39,6 @@ public class AdminController {
 	// 관리자용 메인
 	@RequestMapping("/admin")
 	public String root(Product product, Model model, HttpServletRequest req) {
-		
-		
-		// 로그인된 사람이 관리자인지 회원인지 구분
-		HttpSession session = req.getSession();
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		// 1. (메인페이지)인기상품 
 		List<Product> hotItemList = productRepository.findAll();
@@ -123,17 +109,18 @@ public class AdminController {
 			List<Product> plist = productRepository.findAll();
 			model.addAttribute("plist", plist);
 			
-			return "/admin/listForAdmin";
+			return "admin/listForAdmin";
 		}
 		
 		// 관리자용 상품 정보 디테일
-		@RequestMapping("/prodDetail")
-		public String getDetail(@RequestParam("pno") int pno, Model model) {
+		@RequestMapping("/aProdDetail")
+		public String getDetail(@RequestParam("pno") int pno, HttpServletRequest req, Model model) {
 			Product product = productRepository.findOneByPno(pno);
 			model.addAttribute("product",product);
-			
+			HttpSession session = req.getSession();
+			model.addAttribute("role", session.getAttribute("role"));
 		
-			return "/admin/detail";
+			return "admin/detail";
 		}
 		
 
@@ -144,16 +131,15 @@ public class AdminController {
 			Product product = productRepository.findOneByPno(p.getPno());
 			model.addAttribute("product",product);
 			
-			return"/admin/upProductForm";
+			return "admin/upProductForm";
 		}
 		
 		// 상품 삭제
 		@RequestMapping("/product/delete")
 		public String deleteProduct(@RequestParam("pno") int pno, Model model) {
 			
-			productRepository.deleteById(pno);
-			
 			List<Product> plist = productRepository.findAll();
+			productRepository.deleteById(pno);
 			model.addAttribute("plist", plist);
 			
 			return "redirect:/admin/list";

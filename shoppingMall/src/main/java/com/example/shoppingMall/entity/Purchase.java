@@ -16,8 +16,8 @@ public class Purchase {
 	private int purchaseno;
 	
 	@OneToOne
-	@JoinColumn(name="cartno")
-	private Cart cartno;
+	@JoinColumn(name="cno")
+	private Cart cno;
 	private String paymentMethod;
 	private String payment;
 

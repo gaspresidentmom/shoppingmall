@@ -15,7 +15,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer >{
 	
 	public Product findOneByPno(int pno);
 
-	public List<Product> findByUsername(Member member);
+	//public List<Product> findAllByUsername(Member member);
 	
 
 }
